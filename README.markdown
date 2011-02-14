@@ -9,11 +9,11 @@ and dependencies in one dedicated place.
 
 ## Purpose
 
-Using this plugin you will be able to maintain your javascripts and stylesheets 
-configuration and dependencies easily without searching for references in all 
+Using this plugin you will be able to maintain your javascripts and stylesheets
+configuration and dependencies easily without searching for references in all
 of your templates.
 
-You will be able to use relative or absolute path, to include js and css files 
+You will be able to use relative or absolute path, to include js and css files
 from plugins and to control the location of your assets files.
 
 You may even use this manager with regular use_stylehsheet() and use_javascript()
@@ -22,8 +22,24 @@ helper for specific needs.
 
 ## How to install
 
-Download this plugin into your /plugins dir and activate it in 
-your ProjectConfiguration.class.php (for example).
+Download this plugin into your /plugins dir
+Using `git`, the standard way:
+
+    $ cd /path/to/symfony/project
+    $ git clone git://github.com/vinyll/sfAssetsManagerPlugin.git plugins/sfAssetsManagerPlugin
+
+If your project already uses `git`, you can add the plugin as one of its submodule:
+
+    $ cd /path/to/symfony/project
+    $ git submodule add git://github.com/vinyll/sfAssetsManagerPlugin.git plugins/sfAssetsManagerPlugin
+    $ git submodule update --init
+    $ git commit -a -m "added sfAssetsManagerPlugin submodule"
+
+If you are planning on compressing your js you'll also need to update js-min submodule
+    $ cd plugins/sfAssetsManagerPlugin
+    $ git submodule update --init
+
+and activate it in your ProjectConfiguration.class.php (for example).
 
     $this->enablePlugins(…, 'sfAssetsManagerPlugin');
 
@@ -44,11 +60,11 @@ Use the helper and import the "mypage" package :
 
     <? php use_helper('sfAssetsManager') ?>
     <? php load_assets('mypackage') ?>
-    
+
 
 ## Advanced example
 
-If you use this plugin, you should use it for your whole 
+If you use this plugin, you should use it for your whole
 project and therefore you will use sfAssetManager helper
 all the way.
 
@@ -82,8 +98,8 @@ And configure your packages (…/config/assets_manager.yml) :
       subscribe:
         import: [datepicker, layout]
         css:    niceform.css
-        
-        
+
+
 In your templates :
 
 …/templates/homepageSuccess.php :
@@ -95,9 +111,9 @@ In your templates :
 
     <?php use_helper('sfAssetsManager') ?>
     <?php load_assets('subscribe') ?>
-        
 
-From there, you can easily change your theme, update your jquery version 
+
+From there, you can easily change your theme, update your jquery version
 , use another datepicker for all your templates by updating the appropriate
 package, change framework,… Without modifying each of your templates !
 
@@ -108,17 +124,17 @@ package, change framework,… Without modifying each of your templates !
 
 ### Loading on javascripts or stylesheets
 
-In some cases you should load a package but only its javascripts or 
+In some cases you should load a package but only its javascripts or
 stylesheets.
 That will also only load the specified asset type for imported packages.
 
 Using the above "Advanced example" for loading stylesheets only :
 
-    …    
+    …
     <?php load_assets('homepage', 'css') ?>
     …
 
-    
+
 Would import theses stylesheets in current page :
 
 themeroller.css, yellowDatepicker.css, layout.css, dualview.css
@@ -129,9 +145,9 @@ themeroller.css, yellowDatepicker.css, layout.css, dualview.css
     …
     <?php load_assets('package1') ?>
     <?php use_javascript('myfile.js') ?>
-    <?php load_assets('package2') ?> 
+    <?php load_assets('package2') ?>
     …
-    
+
 
 ### Calling assets manager from an action or a class
 
@@ -141,13 +157,13 @@ However, in some case you must call a package from an action or a class.
 
     $manager = new sfAssetsManager();
     $manager->load('mypackage');
-    
+
 > See Source code or tests for futher details or methods.
 
 
-This will use javascript file in the called ordered and will result with 
+This will use javascript file in the called ordered and will result with
 an inclusion of myfile.js after assets from package1 and before those
-from package2. 
+from package2.
 
 
 ### Altering response after its full load
@@ -159,14 +175,14 @@ In this example case it is useful to alter the js and css tag from the response 
 Therefore, you may activate the alter_response configuration flag and use the appropriate tags.
 
 #### config
-
+    # apps/frontend/config/app.yml
     app:
       sf_assets_manager_plugin:
         alter_response: true
 
 ### layout
 
-replace 
+replace
 
     <?php include_stylesheets() ?>
     <?php include_javascripts() ?>
@@ -188,7 +204,7 @@ with
 ### List of packages :
 
 * Packages are declared in config/assets_manager.yml.
-  This file can be in any level of config dir (module, application, 
+  This file can be in any level of config dir (module, application,
   project, plugin) and be overriden by each other.
 * Packages are based on their names and therfore must be unique.
 * They must all be under the "packages:" root node.
@@ -197,14 +213,14 @@ with
 ### Configuring a package :
 
 * import:  string or array. Existing packages to include. Note that
-assets used in imported packages will be included before the current 
+assets used in imported packages will be included before the current
 package assets.
 
 * js: string or array. javascripts to include.
 
 * css: string or array. stylesheets to include.
 
-> Note that js and css options and treated the same way that the 
+> Note that js and css options and treated the same way that the
 Response object usually treats them.
 That means if you set a relative path, files will be searched from
 /web/js and /web/css.
@@ -216,6 +232,3 @@ The assets will be loaded in the same order than the array.
 See the tests files for further details.
 
 
-## Todo
-
-* Use a minifier to automatically compact files but make it optional.
