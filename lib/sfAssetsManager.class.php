@@ -253,13 +253,35 @@ class sfAssetsManager
   protected function addtoResponse(array $javascripts, array $stylesheets)
   {
     $response = $this->getResponse();
-    foreach($javascripts as $js)
+    foreach ($javascripts as $js)
     {
-      $response->addJavascript($js);
+      if(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/' . $js))
+      {
+        $response->addJavascript($js . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/' . $js));
+      }
+      elseif(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/js/' . $js))
+      {
+        $response->addJavascript($js . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/js/' . $js));
+      }
+      else
+      {
+        $response->addJavascript($js);
+      }
     }
-    foreach($stylesheets as $css)
+    foreach ($stylesheets as $css)
     {
-      $response->addStylesheet($css);
+      if(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/' . $css))
+      {
+        $response->addStylesheet($css . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/' . $css));
+      }
+      elseif(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/css/' . $css))
+      {
+        $response->addStylesheet($css . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/css/' . $css));
+      }
+      else
+      {
+        $response->addStylesheet($css);
+      }
     }
     return $response;
   }
