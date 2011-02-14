@@ -164,7 +164,7 @@ class Minify_CSS_Compressor {
     protected function _selectorsCB($m)
     {
         // remove ws around the combinators
-        return preg_replace('/\\s*([,>+~])\\s*/', '$1', $m[0]);
+        return preg_replace('/\\s*([,>+~])\\s*/', '$1 ', $m[0]);
     }
     
     /**
