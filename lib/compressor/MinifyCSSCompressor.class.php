@@ -1,5 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/../vendor/minify/lib/Compressor.php';
+
+require_once dirname(__FILE__) . '/../vendor/cssmin.php';
+
 /**
  * Fix for Minify_CSS_Compressor class
  *
@@ -9,17 +11,29 @@ require_once dirname(__FILE__).'/../vendor/minify/lib/Compressor.php';
  */
 class MinifyCSSCompressor extends Minify_CSS_Compressor
 {
-  private function __construct($options) {
+
+  private function __construct($options)
+  {
     $this->_options = $options;
   }
-    
+
   public static function process($css, $options = array())
   {
-    $obj = new self($options);
-    return $obj->_process($css);
+    return CssMin::minify($css, array(
+      'remove-empty-blocks' => true,
+      'remove-empty-rulesets' => true,
+      'remove-last-semicolons' => true,
+      'convert-css3-properties' => true,
+      'convert-font-weight-values' => true,
+      'convert-named-color-values' => true,
+      'convert-hsl-color-values' => true,
+      'convert-rgb-color-values' => true,
+      'compress-color-values' => true,
+      'compress-unit-values' => true,
+      'emulate-css3-variables' => true
+    ));
   }
-  
-  
+
   protected function _process($css)
   {
     $css = parent::_process($css);

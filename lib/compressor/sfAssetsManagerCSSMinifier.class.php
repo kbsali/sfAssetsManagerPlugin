@@ -19,6 +19,5 @@ class sfAssetsManagerCSSMinifier extends sfAssetsManagerMinifier
   {
     $content = MinifyCSSCompressor::process($this->readFile($file));
     return $this->writeContent($content);
-  }
-  
+  } 
 }
