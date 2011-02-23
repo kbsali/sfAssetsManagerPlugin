@@ -229,35 +229,50 @@ class sfAssetsManager
    */
   protected function addtoResponse(array $javascripts, array $stylesheets)
   {
+    $cdn = sfConfig::get('app_sf_assets_manager_plugin_cdn', '');
+    if(!empty($cdn))
+    {
+      $cdn.= '/';
+    }
     $response = $this->getResponse();
+    $loadedJs = $response->getJavascripts();
     foreach($javascripts as $js)
     {
+      if(isset($loadedJs[$js]))
+      {
+        $response->removeJavascript($js);
+      }
       if(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/' . $js))
       {
-        $response->addJavascript($js . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/' . $js));
+        $response->addJavascript($cdn . $js . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/' . $js));
       }
       elseif(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/js/' . $js))
       {
-        $response->addJavascript($js . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/js/' . $js));
+        $response->addJavascript($cdn . $js . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/js/' . $js));
       }
       else
       {
-        $response->addJavascript($js);
+        $response->addJavascript($cdn . $js);
       }
     }
+    $loadedCss = $response->getStylesheets();
     foreach($stylesheets as $css)
     {
+      if(isset($loadedCss[$css]))
+      {
+        $response->removeJavascript($css);
+      }
       if(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/' . $css))
       {
-        $response->addStylesheet($css . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/' . $css));
+        $response->addStylesheet($cdn . $css . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/' . $css));
       }
       elseif(sfConfig::get('app_sf_assets_manager_plugin_append_filemtime', false) && file_exists(sfConfig::get('sf_web_dir') . '/css/' . $css))
       {
-        $response->addStylesheet($css . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/css/' . $css));
+        $response->addStylesheet($cdn . $css . '?v=' . filemtime(sfConfig::get('sf_web_dir') . '/css/' . $css));
       }
       else
       {
-        $response->addStylesheet($css);
+        $response->addStylesheet($cdn . $css);
       }
     }
     return $response;
