@@ -197,6 +197,9 @@ class sfAssetsManager
     }
     elseif($type == 'css')
     {
+      $cdnImg = sfConfig::get('app_sf_assets_manager_plugin_cdn_img', '');
+      $strCss = str_replace("url('/", "url('" . $cdnImg . '/', file_get_contents($packed));
+      file_put_contents($packed, $strCss);
       $minifier = new sfAssetsManagerCSSMinifier;
     }
     $minified = $minifier->execute($packed);
