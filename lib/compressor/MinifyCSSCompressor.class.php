@@ -28,7 +28,7 @@ class MinifyCSSCompressor extends Minify_CSS_Compressor
       'convert-named-color-values' => true,
       'convert-hsl-color-values' => true,
       'convert-rgb-color-values' => true,
-      'compress-color-values' => true,
+      'compress-color-values' => false,
       'compress-unit-values' => true,
       'emulate-css3-variables' => true
     ));
